@@ -2,8 +2,24 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+
 
 const Home: NextPage = () => {
+  const router = useRouter()
+
+  {/* Navigate to a page programmatically using route.push() */}
+  const gotoDetailPage=()=> {
+    router.push({
+      pathname: '/posts/[postId]',
+      query: {
+        postId: 123, // path param
+        ref: "social" // query param
+      }
+    })
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,6 +37,19 @@ const Home: NextPage = () => {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
+
+        {/* Navigate with next/link */}
+        {/* Client side routing */}
+        {/* using component Link: tự động bật mode Prefetch mặc định: true, tự động load about page (file js) về trước -> chỉ cần render khi gọi 
+            chỉ prefetch trong viewport
+            chỉ đc bật mode production (build)
+            mạng chậm -> disable prefetch
+        */}
+        <Link href="/about" prefetch={true}>
+        <a>Go to About</a>
+        </Link>
+
+        <button onClick={gotoDetailPage}>Go to post detail page</button>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
