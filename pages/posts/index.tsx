@@ -8,7 +8,7 @@ interface IPostListProps {
 
 // Static HTML Generation: function render dữ liệu phía client
 const PostList: React.FunctionComponent<IPostListProps> = ({posts}) => {
-    console.log("posts: ", posts);
+    // console.log("posts: ", posts);
 
     return  <div>
                 <h1>Post List Page</h1>
@@ -30,12 +30,12 @@ export default PostList;
 // chạy môi trường build product: chạy đúng 1 lần lúc build, các lần request sau ko chạy lại đã có sẵn
 // không được dùng chung vs hàm getServerSideProps 
 export const getStaticProps: GetStaticProps<IPostListProps> = async (context: GetStaticPropsContext) => {
-    console.log("static props");
+    // console.log("static props");
 
     // fetch api phía server
     const response = await fetch("https://jsonplaceholder.typicode.com/posts?_page=1")
     const data = await response.json()
-    console.log(data);
+    // console.log(data);
 
     return {
         props: {
