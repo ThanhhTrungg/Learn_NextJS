@@ -9,6 +9,8 @@ interface IPostDetailProps {
 const PostDetail: React.FunctionComponent<IPostDetailProps> = ({post}) => {
     const router = useRouter()
 
+    if(router.isFallback) return <div style={{textAlign: "center", fontSize: "2rem"}}>Loading ...</div>
+
     if(!post) return null
     return  <div>
                 <h1>Post Detail Page</h1> 
@@ -27,7 +29,7 @@ export const getStaticProps: GetStaticProps<IPostDetailProps> = async (context: 
         notFound: true,
     } 
 
-    // fetch api phía server
+    
     const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
     const data = await response.json()
     console.log(data);
@@ -35,13 +37,12 @@ export const getStaticProps: GetStaticProps<IPostDetailProps> = async (context: 
     return {
         props: { 
             post: data,
-        }
+        },
+        revalidate: 5, // Tạo ISR: chỉ cần thêm revalidate với giá trị vào SSG
     }
 }
 
-// Static HTML + JSON Data + Dynamic Routes
-// truyền vào array paths bao nhiêu item -> gọi function getStaticProps bấy nhiêu lần -> ứng với mỗi getStaticProps sẽ tạo ra 1 file html + json tương ứng
-// dynamic routes (query params) bắt buộc phải dạng String ( toString() )
+// getStaticPaths with fallback 
 export const getStaticPaths: GetStaticPaths = async ()=> {
     console.log("Get static paths");
 
@@ -51,7 +52,8 @@ export const getStaticPaths: GetStaticPaths = async ()=> {
 
     return {
         paths: data.map((post: any) => ({params: {postId : post.id.toString()}})),
-        fallback: false,
+        // fallback: "blocking",
+        fallback: true,
     }
 }
 
