@@ -14,3 +14,12 @@ const ParamsPage: React.FunctionComponent<IParamsPageProps> = (props) => {
 };
 
 export default ParamsPage;
+
+// ở cả 2 mode: dev, production -> khi request lên trang params -> đều gọi đến getServerSideProps ->request bao nhiêu lần -> trả về data bấy nhiêu lần
+export const getServerSideProps = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+    // fake slow query    
+    return {
+        props: {}
+    }
+}
